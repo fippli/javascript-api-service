@@ -1,0 +1,22 @@
+{
+  "name": "@fippli/api-utils",
+  "version": "0.0.1",
+  "description": "API utils for javascript projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fippli/javascript-api-utils.git"
+  },
+  "author": "Filip Johansson <filip.johansson@protonmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fippli/javascript-api-utils/issues"
+  },
+  "homepage": "https://github.com/fippli/javascript-api-utils#readme",
+  "devDependencies": {
+    "jest": "^23.5.0"
+  }
+}
