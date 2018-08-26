@@ -11,7 +11,10 @@ const createHeaders = ( headersObject = {} ) => {
     return Object.assign( {}, defaultHeaders, headersObject )
 };
 
-const defaultOptions = {};
+const defaultOptions = {
+    mode: "cors",
+    credentials: "include",
+};
 const buildUrl = ( endpoint, options = defaultOptions ) => {
     // Port is required for localhost
     if ( options.host === "localhost" && !options.port ) {
@@ -47,7 +50,9 @@ const handleError = error => {
 const GET = ( endpoint = "/", options = defaultOptions ) => {
     return fetch( buildUrl( endpoint, options ), {
         method: "GET",
-        headers: createHeaders( options.headers )
+        headers: createHeaders( options.headers ),
+        mode: options.mode,
+        credentials: options.credentials,
     })
     .then( verifyResponse, handleError );
 };
@@ -56,7 +61,9 @@ const PUT = ( endpoint, data, options = defaultOptions ) => {
     return fetch( buildUrl( endpoint, options ), {
         method: "PUT",
         headers: createHeaders( options.headers ),
-        body: JSON.stringify( data )
+        body: JSON.stringify( data ),
+        mode: options.mode,
+        credentials: options.credentials,
     })
     .then( verifyResponse, handleError );
 };
@@ -65,7 +72,9 @@ const POST = ( endpoint, data, options = defaultOptions ) => {
     return fetch( buildUrl( endpoint, options ), {
         method: "POST",
         headers: createHeaders( options.headers ),
-        body: JSON.stringify( data )
+        body: JSON.stringify( data ),
+        mode: options.mode,
+        credentials: options.credentials,
     })
     .then( verifyResponse, handleError );
 };
@@ -74,7 +83,9 @@ const DELETE = ( endpoint, data, options = defaultOptions ) => {
     return fetch( buildUrl( endpoint, options ), {
         method: "DELETE",
         headers: createHeaders( options.headers ),
-        body: JSON.stringify( data )
+        body: JSON.stringify( data ),
+        mode: options.mode,
+        credentials: options.credentials,
     })
     .then( verifyResponse, handleError );
 };
