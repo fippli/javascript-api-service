@@ -1,6 +1,6 @@
 {
   "name": "@fippli/api-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "API utils for javascript projects.",
   "main": "index.js",
   "scripts": {
