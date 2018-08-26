@@ -11,10 +11,16 @@ const createHeaders = ( headersObject = {} ) => {
     return Object.assign( {}, defaultHeaders, headersObject )
 };
 
-const defaultOptions = {
+let defaultOptions = {
     mode: "cors",
     credentials: "include",
 };
+
+// [!] Mutating the defaulOption
+const configureRequestOptions = newOptions => {
+    defaultOptions = newOptions;
+};
+
 const buildUrl = ( endpoint, options = defaultOptions ) => {
     // Port is required for localhost
     if ( options.host === "localhost" && !options.port ) {
@@ -98,4 +104,5 @@ module.exports = {
     DELETE: DELETE,
     buildUrl: buildUrl,
     createHeaders: createHeaders,
+    configureRequestOptions: configureRequestOptions,
 };
