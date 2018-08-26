@@ -20,7 +20,7 @@ const buildUrl = ( endpoint, options = defaultOptions ) => {
     if ( options.host === "localhost" && !options.port ) {
         throw new Error( `You need to specify a port when host is set to "localhost".` )
     }
-    return `${ options.host ? `http://${options.host}:${options.port ? options.port : ""}` : ""}${endpoint}`
+    return `${ options.host ? `http://${options.host}${options.port ? `:${options.port}` : ""}` : ""}${endpoint}`
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -50,8 +50,6 @@ const handleError = error => {
 const GET = ( endpoint = "/", options = defaultOptions ) => {
     return fetch( buildUrl( endpoint, options ), {
         method: "GET",
-        headers: createHeaders( options.headers ),
-        mode: options.mode,
         credentials: options.credentials,
     })
     .then( verifyResponse, handleError );

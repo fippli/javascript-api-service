@@ -19,6 +19,16 @@ test('Build url with endpoint "/api/v1/test" and options {host:"localhost", port
     expect(apiUtils.buildUrl("/api/v1/test", {host:"localhost", port:8000})).toBe("http://localhost:8000/api/v1/test");
 });
 
+test('Build url with endpoint "/" and options {host:"www.test.com"}.', () => {
+    expect(apiUtils.buildUrl("/", {host:"www.test.com"})).toBe("http://www.test.com/");
+});
+
+
+test('Build url with endpoint "/test/test" and options {host:"www.test.com"}.', () => {
+    expect(apiUtils.buildUrl("/test/test", {host:"www.test.com"})).toBe("http://www.test.com/test/test");
+});
+
+
 //
 // Test create headers
 //
