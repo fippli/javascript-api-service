@@ -1,6 +1,6 @@
 /*
-JavaScript API utilities.
-Make http requests.
+    JavaScript API utilities.
+    Make http requests.
  */
 
 // ----------------------------------------------------------------------------------------------------
@@ -21,6 +21,19 @@ const configureRequestOptions = newOptions => {
     defaultOptions = newOptions;
 };
 
+// [!] Mutating defaultOptions
+const corsConfig = ( host, port ) => {
+    defaultOptions = {
+        host: host,
+        port: port,
+        mode: "cors",
+        credentials: "include",
+    }
+};
+
+//
+// Used to build the URL of the request.
+//
 const buildUrl = ( endpoint, options = defaultOptions ) => {
     // Port is required for localhost
     if ( options.host === "localhost" && !options.port ) {
@@ -105,4 +118,5 @@ module.exports = {
     buildUrl: buildUrl,
     createHeaders: createHeaders,
     configureRequestOptions: configureRequestOptions,
+    corsConfig: corsConfig,
 };
