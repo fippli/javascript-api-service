@@ -62,7 +62,6 @@ const verifyResponse = response => {
         if ( options.logResponse ) {
             console.log( "Receiving response", response.json(), "from", response.headers.get( "Request URL" ) )
         }
-        ;
         return response.json();
     } else {
         handleError( "Response was not JSON" );
@@ -82,7 +81,7 @@ const handleError = error => {
 // METHODS
 
 const GET = ( endpoint = "/", options = defaultOptions ) => {
-    if ( logRequests ) {
+    if ( options.logRequests ) {
         console.log( "[GET] Requesting", buildUrl( endpoint, options ) )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -93,7 +92,7 @@ const GET = ( endpoint = "/", options = defaultOptions ) => {
 };
 
 const PUT = ( endpoint, data, options = defaultOptions ) => {
-    if ( logRequests ) {
+    if ( options.logRequests ) {
         console.log( "[PUT] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -107,7 +106,7 @@ const PUT = ( endpoint, data, options = defaultOptions ) => {
 };
 
 const POST = ( endpoint, data, options = defaultOptions ) => {
-    if ( logRequests ) {
+    if ( options.logRequests ) {
         console.log( "[POST] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -121,7 +120,7 @@ const POST = ( endpoint, data, options = defaultOptions ) => {
 };
 
 const DELETE = ( endpoint, data, options = defaultOptions ) => {
-    if ( logRequests ) {
+    if ( options.logRequests ) {
         console.log( "[DELETE] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
