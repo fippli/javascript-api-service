@@ -84,7 +84,7 @@ const handleError = error => {
 // METHODS
 
 const GET = ( endpoint = "/", options = defaultOptions ) => {
-    if ( options.logRequests ) {
+    if ( options.logRequest ) {
         console.log( "[GET] Requesting", buildUrl( endpoint, options ) )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -95,7 +95,7 @@ const GET = ( endpoint = "/", options = defaultOptions ) => {
 };
 
 const PUT = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequests ) {
+    if ( options.logRequest ) {
         console.log( "[PUT] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -109,7 +109,7 @@ const PUT = ( endpoint, data, options = defaultOptions ) => {
 };
 
 const POST = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequests ) {
+    if ( options.logRequest ) {
         console.log( "[POST] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -123,7 +123,7 @@ const POST = ( endpoint, data, options = defaultOptions ) => {
 };
 
 const DELETE = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequests ) {
+    if ( options.logRequest ) {
         console.log( "[DELETE] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
