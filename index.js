@@ -7,7 +7,7 @@
 // Module options
 let options = {
     logResponse: false,
-    logRequests: false,
+    logRequest: false,
 };
 
 const setModuleOption = ( option, value ) => {
@@ -59,10 +59,13 @@ const buildUrl = ( endpoint, options = defaultOptions ) => {
 const verifyResponse = response => {
     const contentType = response.headers.get( "content-type" );
     if ( contentType && contentType.indexOf( "application/json" ) !== -1 ) {
+        const responseJson = response.json();
         if ( options.logResponse ) {
-            console.log( "Receiving response", response.json(), "from", response.headers.get( "Request URL" ) )
+            responseJson.then( responseData => {
+                console.log( "Receiving response", responseData );
+            })
         }
-        return response.json();
+        return responseJson;
     } else {
         handleError( "Response was not JSON" );
     }
