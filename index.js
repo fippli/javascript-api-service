@@ -4,6 +4,17 @@
  */
 
 // ----------------------------------------------------------------------------------------------------
+// Module options
+let options = {
+    logResponse: false,
+    logRequests: false,
+};
+
+const setModuleOption = ( option, value ) => {
+    options[ option ] = value;
+};
+
+// ----------------------------------------------------------------------------------------------------
 // Handle options
 
 const defaultHeaders = { "Content-type": "application/json" };
@@ -48,6 +59,10 @@ const buildUrl = ( endpoint, options = defaultOptions ) => {
 const verifyResponse = response => {
     const contentType = response.headers.get( "content-type" );
     if ( contentType && contentType.indexOf( "application/json" ) !== -1 ) {
+        if ( options.logResponse ) {
+            console.log( "Receiving response", response.json(), "from", response.headers.get( "Request URL" ) )
+        }
+        ;
         return response.json();
     } else {
         handleError( "Response was not JSON" );
@@ -67,43 +82,55 @@ const handleError = error => {
 // METHODS
 
 const GET = ( endpoint = "/", options = defaultOptions ) => {
+    if ( logRequests ) {
+        console.log( "[GET] Requesting", buildUrl( endpoint, options ) )
+    }
     return fetch( buildUrl( endpoint, options ), {
         method: "GET",
         credentials: options.credentials,
-    })
+    } )
     .then( verifyResponse, handleError );
 };
 
 const PUT = ( endpoint, data, options = defaultOptions ) => {
+    if ( logRequests ) {
+        console.log( "[PUT] Requesting", buildUrl( endpoint, options ), "with data:", data )
+    }
     return fetch( buildUrl( endpoint, options ), {
         method: "PUT",
         headers: createHeaders( options.headers ),
         body: JSON.stringify( data ),
         mode: options.mode,
         credentials: options.credentials,
-    })
+    } )
     .then( verifyResponse, handleError );
 };
 
 const POST = ( endpoint, data, options = defaultOptions ) => {
+    if ( logRequests ) {
+        console.log( "[POST] Requesting", buildUrl( endpoint, options ), "with data:", data )
+    }
     return fetch( buildUrl( endpoint, options ), {
         method: "POST",
         headers: createHeaders( options.headers ),
         body: JSON.stringify( data ),
         mode: options.mode,
         credentials: options.credentials,
-    })
+    } )
     .then( verifyResponse, handleError );
 };
 
 const DELETE = ( endpoint, data, options = defaultOptions ) => {
+    if ( logRequests ) {
+        console.log( "[DELETE] Requesting", buildUrl( endpoint, options ), "with data:", data )
+    }
     return fetch( buildUrl( endpoint, options ), {
         method: "DELETE",
         headers: createHeaders( options.headers ),
         body: JSON.stringify( data ),
         mode: options.mode,
         credentials: options.credentials,
-    })
+    } )
     .then( verifyResponse, handleError );
 };
 
@@ -119,4 +146,5 @@ module.exports = {
     createHeaders: createHeaders,
     configureRequestOptions: configureRequestOptions,
     corsConfig: corsConfig,
+    setModuleOption: setModuleOption,
 };
