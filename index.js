@@ -1,17 +1,17 @@
 /*
     JavaScript API utilities.
-    Make http requests.
+    Make http requests, upload files (and nothing more)...
  */
 
 // ----------------------------------------------------------------------------------------------------
 // Module options
-let options = {
+const moduleOptions = {
     logResponse: false,
     logRequest: false,
 };
 
 const setModuleOption = ( option, value ) => {
-    options[ option ] = value;
+    moduleOptions[ option ] = value;
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -22,30 +22,28 @@ const createHeaders = ( headersObject = {} ) => {
     return Object.assign( {}, defaultHeaders, headersObject )
 };
 
-let defaultOptions = {
+let defaultRequestOptions = {
     mode: "cors",
     credentials: "include",
 };
 
-// [!] Mutating the defaulOption
+// [!] Mutating the defaulOptions
 const configureRequestOptions = newOptions => {
-    defaultOptions = newOptions;
+    defaultRequestOptions = newOptions;
 };
 
-// [!] Mutating defaultOptions
+// [!] Mutating defaultRequestOptions
 const corsConfig = ( host, port ) => {
-    defaultOptions = {
-        host: host,
-        port: port,
-        mode: "cors",
-        credentials: "include",
-    }
+    defaultRequestOptions.host = host;
+    defaultRequestOptions.port = port;
+    defaultRequestOptions.mode = "cors";
+    defaultRequestOptions.credential = "include";
 };
 
 //
 // Used to build the URL of the request.
 //
-const buildUrl = ( endpoint, options = defaultOptions ) => {
+const buildUrl = ( endpoint, options = defaultRequestOptions ) => {
     // Port is required for localhost
     if ( options.host === "localhost" && !options.port ) {
         throw new Error( `You need to specify a port when host is set to "localhost".` )
@@ -60,10 +58,10 @@ const verifyResponse = response => {
     const contentType = response.headers.get( "content-type" );
     if ( contentType && contentType.indexOf( "application/json" ) !== -1 ) {
         const responseJson = response.json();
-        if ( options.logResponse ) {
+        if ( moduleOptions.logResponse ) {
             responseJson.then( responseData => {
                 console.log( "Receiving response", responseData );
-            })
+            } )
         }
         return responseJson;
     } else {
@@ -83,8 +81,8 @@ const handleError = error => {
 // ----------------------------------------------------------------------------------------------------
 // METHODS
 
-const GET = ( endpoint = "/", options = defaultOptions ) => {
-    if ( options.logRequest ) {
+const GET = ( endpoint = "/", options = defaultRequestOptions ) => {
+    if ( moduleOptions.logRequest ) {
         console.log( "[GET] Requesting", buildUrl( endpoint, options ) )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -94,8 +92,8 @@ const GET = ( endpoint = "/", options = defaultOptions ) => {
     .then( verifyResponse, handleError );
 };
 
-const PUT = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequest ) {
+const PUT = ( endpoint, data, options = defaultRequestOptions ) => {
+    if ( moduleOptions.logRequest ) {
         console.log( "[PUT] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -108,8 +106,8 @@ const PUT = ( endpoint, data, options = defaultOptions ) => {
     .then( verifyResponse, handleError );
 };
 
-const POST = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequest ) {
+const POST = ( endpoint, data, options = defaultRequestOptions ) => {
+    if ( moduleOptions.logRequest ) {
         console.log( "[POST] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -122,8 +120,8 @@ const POST = ( endpoint, data, options = defaultOptions ) => {
     .then( verifyResponse, handleError );
 };
 
-const DELETE = ( endpoint, data, options = defaultOptions ) => {
-    if ( options.logRequest ) {
+const DELETE = ( endpoint, data, options = defaultRequestOptions ) => {
+    if ( moduleOptions.logRequest ) {
         console.log( "[DELETE] Requesting", buildUrl( endpoint, options ), "with data:", data )
     }
     return fetch( buildUrl( endpoint, options ), {
@@ -134,6 +132,55 @@ const DELETE = ( endpoint, data, options = defaultOptions ) => {
         credentials: options.credentials,
     } )
     .then( verifyResponse, handleError );
+};
+
+// ----------------------------------------------------------------------------------------------------
+// File upload
+
+// Outputs progress to the callback function progress
+// Sets done to thefunction done.
+const fileUpload = ( endpoint, data, progress, done, options = defaultRequestOptions ) => {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open( "POST", buildUrl( endpoint, options ), true );
+    xhr.withCredentials = true;
+
+    xhr.onreadystatechange = () => {
+
+        if ( xhr.readyState === XMLHttpRequest.DONE ) {
+
+            if ( xhr.status === 200 ) {
+
+                const responseJson = JSON.parse( xhr.responseText );
+                done( responseJson, true );
+
+            } else {
+
+                done( xhr.responseText, false );
+
+            }
+        }
+
+    };
+
+    xhr.onerror = () => {
+        done( xhr.responseText, false );
+    };
+
+    xhr.upload.onprogress = ( e ) => {
+        if ( e.lengthComputable ) {
+            if ( moduleOptions.logRequest ) { console.log(
+                `File upload progress: ${(e.loaded/e.total)*100}%
+                Uploaded: ${e.loaded}
+                Total: ${e.total}
+                `
+            )}
+            progress( ( e.loaded / e.total ) * 100 );
+        }
+    };
+
+    xhr.send( data );
+
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -149,4 +196,5 @@ module.exports = {
     configureRequestOptions: configureRequestOptions,
     corsConfig: corsConfig,
     setModuleOption: setModuleOption,
+    fileUpload: fileUpload,
 };
