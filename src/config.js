@@ -1,4 +1,4 @@
-const config: {
+const config = {
   moduleOptions: {
     logResponse: false,
     logRequest: false,
@@ -23,7 +23,7 @@ const configureRequestOptions = newOptions => {
 };
 
 
-module.export = {
+module.exports = {
   config: config,
   setModuleOption: setModuleOption,
   apiConfig: apiConfig,
