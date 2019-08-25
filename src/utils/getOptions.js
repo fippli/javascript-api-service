@@ -1,11 +1,9 @@
-const headers = require('./headers');
 
 const getOptions = (method, body, withFile) => {
   if (body && !withFile) {
     return Object.freeze({
       method,
       body: JSON.stringify(body),
-      headers,
     });
   }
 
@@ -18,7 +16,6 @@ const getOptions = (method, body, withFile) => {
 
   return Object.freeze({
     method,
-    headers,
   });
 };
 
