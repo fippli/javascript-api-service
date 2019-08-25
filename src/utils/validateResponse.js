@@ -3,11 +3,16 @@
  * @param {object} response
  * @returns {object} - HTTP response
  */
-const validateResponse = (response) => {
-  if (!response.ok) {
-    throw new Error(response.json().message || 'No response error message specified.');
+const validateResponse = async (response) => {
+  try {
+    if (!response.ok) {
+      const responseData = await response.json();
+      throw new Error(responseData.message || 'No response error message specified.');
+    }
+    return response;
+  } catch (error) {
+    throw error;
   }
-  return response;
 };
 
 module.exports = validateResponse;
