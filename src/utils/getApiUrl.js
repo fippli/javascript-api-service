@@ -1,16 +1,16 @@
+const {
+  NODE_ENV,
+  REACT_APP_BACKEND_PORT,
+  REACT_APP_BACKEND_HOST,
+} = process.env;
 /**
  * Get API url depending on env
  * @param {string} endpoint 
  * @returns {string}
  */
-const getApiUrl = (endpoint) => {
-  const {
-    NODE_ENV,
-    REACT_APP_BACKEND_PORT,
-  } = process.env;
-
+const getApiUrl = (endpoint, port = REACT_APP_BACKEND_PORT, host = REACT_APP_BACKEND_HOST) => {
   if (NODE_ENV === 'development') {
-    return `http://localhost:${REACT_APP_BACKEND_PORT}${endpoint}`;
+    return `http://${host || 'localhost'}:${port}${endpoint}`;
   }
 
   return `${endpoint}`;
