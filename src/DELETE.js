@@ -1,23 +1,14 @@
-const buildUrl = require('./buildUrl');
-const verifyResponse = require('./verifyResponse');
-const handleError = require('./handleError');
-const createHeaders = require('./createHeaders');
+const REQUEST = require('./REQUEST');
 
-module.exports = (config) => {
-  const moduleOptions = config.moduleOptions;
-  const defaultRequestOptions = config.defaultRequestOptions;
-
-  return (endpoint, data, options = defaultRequestOptions) => {
-    if (moduleOptions.logRequest) {
-      console.log("[DELETE] Requesting", buildUrl(endpoint, options), "with data:", data)
-    }
-    return fetch(buildUrl(endpoint, options), {
-        method: "DELETE",
-        headers: createHeaders(options.headers),
-        body: JSON.stringify(data),
-        mode: options.mode,
-        credentials: options.credentials,
-      })
-      .then(verifyResponse(config), handleError);
-  };
+/**
+ * DELETE request to a url 
+ * that handles response and parses it to json
+ * and also handles errors
+ * @param {string} - Endpoint url
+ * @returns {Promise} - HTTP response data as promise
+ */
+const DELETE = (callback, endpoint, body = undefined) => {
+  REQUEST(callback, 'DELETE', endpoint, body);
 };
+
+module.exports = DELETE;

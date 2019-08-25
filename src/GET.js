@@ -1,22 +1,15 @@
-const buildUrl = require('./buildUrl');
-const verifyResponse = require('./verifyResponse');
-const handleError = require('./handleError');
+const REQUEST = require('./REQUEST');
 
-//
-// Get request
-//
-module.exports = (config) => {
-  const moduleOptions = config.moduleOptions;
-  const defaultRequestOptions = config.defaultRequestOptions;
-
-  return (endpoint = "/", options = defaultRequestOptions) => {
-    if (moduleOptions.logRequest) {
-      console.log("[GET] Requesting", buildUrl(endpoint, options))
-    }
-    return fetch(buildUrl(endpoint, options), {
-        method: "GET",
-        credentials: options.credentials,
-      })
-      .then(verifyResponse(config), handleError);
-  };
+/**
+ * GET request to a url 
+ * that handles response and parses it to json
+ * and also handles errors
+ * @param {function} callback - Callback function
+ * @param {string} endpoint - Endpoint url
+ * @returns {Promise} - HTTP response data as promise
+ */
+const GET = (callback, endpoint) => {
+  REQUEST(callback, 'GET', endpoint);
 };
+
+module.exports = GET;
