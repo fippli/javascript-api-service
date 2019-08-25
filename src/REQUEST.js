@@ -12,14 +12,13 @@ const getApiUrl = require('./utils/getApiUrl');
  * @param {function} callback - 
  * @param {string} method - 
  * @param {string} endpoint - Endpoint url
- * @param {object} body - 
- * @returns {Promise} - HTTP response data as promise
+ * @param {object} options - Request options
  */
-const REQUEST = (callback, method, endpoint, body = undefined, withFile = false) => {
+const REQUEST = (callback, method, endpoint, options) => {
   const requestTime = performance.now();
-  const url = getApiUrl(endpoint);
+  const url = getApiUrl(endpoint, options.port, options.host);
 
-  fetch(url, getOptions(method, body, withFile))
+  fetch(url, getOptions(method, options.body, options.withFile))
     .then(validateResponse)
     .then(getResponseData)
     .then(measureResponseTime(requestTime, url, method))

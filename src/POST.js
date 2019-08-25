@@ -1,4 +1,5 @@
 const REQUEST = require('./REQUEST');
+const defaultOptions = require('./utils/defaultOptions');
 
 /**
  * POST request to a url 
@@ -7,8 +8,8 @@ const REQUEST = require('./REQUEST');
  * @param {string} - Endpoint url
  * @returns {Promise} - HTTP response data as promise
  */
-const POST = (callback, endpoint, body = undefined, withFile = false) => {
-  REQUEST(callback, 'POST', endpoint, body, withFile);
+const POST = (callback, endpoint, options = defaultOptions) => {
+  REQUEST(callback, 'POST', endpoint, options);
 };
 
 module.exports = POST;

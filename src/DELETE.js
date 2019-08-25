@@ -1,4 +1,5 @@
 const REQUEST = require('./REQUEST');
+const defaultOptions = require('./utils/defaultOptions');
 
 /**
  * DELETE request to a url 
@@ -7,8 +8,8 @@ const REQUEST = require('./REQUEST');
  * @param {string} - Endpoint url
  * @returns {Promise} - HTTP response data as promise
  */
-const DELETE = (callback, endpoint, body = undefined) => {
-  REQUEST(callback, 'DELETE', endpoint, body);
+const DELETE = (callback, endpoint, options = defaultOptions) => {
+  REQUEST(callback, 'DELETE', endpoint, options);
 };
 
 module.exports = DELETE;

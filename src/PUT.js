@@ -1,4 +1,5 @@
 const REQUEST = require('./REQUEST');
+const defaultOptions = require('./utils/defaultOptions');
 
 /**
  * PUT request to a url 
@@ -7,8 +8,8 @@ const REQUEST = require('./REQUEST');
  * @param {string} - Endpoint url
  * @returns {Promise} - HTTP response data as promise
  */
-const PUT = (callback, endpoint, body = undefined, withFile = false) => {
-  REQUEST(callback, 'PUT', endpoint, body, withFile);
+const PUT = (callback, endpoint, options = defaultOptions) => {
+  REQUEST(callback, 'PUT', endpoint, options);
 };
 
 module.exports = PUT;

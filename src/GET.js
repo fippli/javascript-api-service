@@ -1,4 +1,5 @@
 const REQUEST = require('./REQUEST');
+const defaultOptions = require('./utils/defaultOptions');
 
 /**
  * GET request to a url 
@@ -8,8 +9,8 @@ const REQUEST = require('./REQUEST');
  * @param {string} endpoint - Endpoint url
  * @returns {Promise} - HTTP response data as promise
  */
-const GET = (callback, endpoint) => {
-  REQUEST(callback, 'GET', endpoint);
+const GET = (callback, endpoint, options = defaultOptions) => {
+  REQUEST(callback, 'GET', endpoint, options);
 };
 
 module.exports = GET;
